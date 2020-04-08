@@ -5,7 +5,7 @@ const ticket_views = require('../views/ticket-views');
 const item_model = require('../models/item-model');
 const item_views = require('../views/item-views');
 
-const home_view = require('../views/home.views');
+const home_view = require('../views/home-views');
 
 const get_home =  (req, res, next) => {
     const user = req.user;
@@ -14,7 +14,7 @@ const get_home =  (req, res, next) => {
         .then(() => {
             console.log('user:', user);
             let data = {
-               // user_name: user.name,
+                user_name: user.name,
                // tickets: user.tickets
             };
             let html = home_view.home_view(data)
@@ -83,7 +83,7 @@ const post_delete_ticket = (req, res, next) => {
     //Remove ticket object from database
     user.save().then(() => {
         ticket_model.findByIdAndRemove(ticket_id_to_delete).then(() => {
-            res.redirect('/');
+            res.redirect('/incidents');
         });
     });
 };
@@ -120,7 +120,7 @@ const post_ticket = (req, res, next) => {
         console.log('ticket saved');
         user.tickets.push(new_ticket);
         user.save().then(() => {
-            return res.redirect('/tickets');
+            return res.redirect('/incidents');
         });
     });
 };

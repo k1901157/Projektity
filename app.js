@@ -50,9 +50,10 @@ app.post('/logout', auth_controller.post_logout);
 
 //tickets
 app.get('/', is_logged_handler, ticket_controller.get_home);
+app.get('/home', is_logged_handler, ticket_controller.get_home);
 
 app.get('/add-item', is_logged_handler, ticket_controller.get_item);
-app.get('/tickets', is_logged_handler, ticket_controller.get_tickets);
+app.get('/incidents', is_logged_handler, ticket_controller.get_tickets);
 
 app.post('/delete-ticket', is_logged_handler, ticket_controller.post_delete_ticket);
 

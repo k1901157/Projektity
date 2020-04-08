@@ -11,27 +11,10 @@ const tickets_view = ((data) => {
 
     <body>
     <div id="ticket">
-    <a href= "/">home</a><div></div></br>
+    <a href= "/home">Home</a><div></div></br>
     <h1>IT Service Desk</h1>
     <h2>Please chose Ticket Type</h2> `;
 
-
-    data.tickets.forEach((ticket) => {
-        //html += ticket.text;
-        html += `
-
-            <a href= "/ticket/${ticket._id}">${ticket.text}</a><div></div></br>
-            <label> Ticket Type:</label> <td>${ticket.ticketType}</td> <div></div></br>
-            <label> Incident Type:</label> <td>${ticket.incidentType}</td> <div></div></br>
-            <label> Order Type:</label> <td>${ticket.orderType}</td> <div></div></br>
-
-            <form action="delete-ticket" method="POST">
-                <input type="hidden" name="ticket_id" value="${ticket._id}">
-                <button type="submit" class="delete_button">Delete Ticket</button>
-            </form>
-            <div></div>
-            `;
-    });
 
     html += `
         <form action="/add-ticket" method="POST">
@@ -62,8 +45,27 @@ const tickets_view = ((data) => {
 
             <button type="submit" class="add_button">Add Ticket</button>
         </form>
-        <div></div>
+        <div></div>`,
 
+        data.tickets.forEach((ticket) => {
+            //html += ticket.text;
+            html += `
+    
+                <a href= "/ticket/${ticket._id}">${ticket.text}</a><div></div></br>
+                <label> Ticket Type:</label> <td>${ticket.ticketType}</td> <div></div></br>
+                <label> Incident Type:</label> <td>${ticket.incidentType}</td> <div></div></br>
+                <label> Order Type:</label> <td>${ticket.orderType}</td> <div></div></br>
+    
+                <form action="delete-ticket" method="POST">
+                    <input type="hidden" name="ticket_id" value="${ticket._id}">
+                    <button type="submit" class="delete_button">Delete Ticket</button>
+                </form>
+                <div></div>
+                `;
+        });
+
+
+        html += `
         <div></div>
         Logged in as user: ${data.user_name}
         
