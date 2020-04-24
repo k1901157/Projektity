@@ -61,7 +61,6 @@ app.post('/add-order', is_logged_handler, ticket_controller.post_order);
 app.post('/delete-order', is_logged_handler, ticket_controller.post_delete_order);
 
 
-
 app.get('/ticket/:id', is_logged_handler, ticket_controller.get_ticket);
 
 
