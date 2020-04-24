@@ -6,15 +6,15 @@ const user_schema = new Schema({
         type: String,
         required: true
     },
-    tickets: [{
+    incidents: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ticket',
+        ref: 'incident',
         req: true
     }],
 
-    items: [{
+    orders: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'item',
+        ref: 'order',
         req: true
     }],
 

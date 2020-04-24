@@ -5,34 +5,45 @@ const home_view = (data) => {
     <head>
     <title>IT Service Desk</title>
     <meta http-equiv="Content-Type", content="text/html;charset=UTF-8">
-    <link rel='stylesheet' href='/style/style.css' />
+    <link rel='stylesheet' href='/style/home.css' />
     </head>
     <body>
-    <div id=home>
-
+    <div id=home_all>
+    <a class="nav" href= "/home">Home</a>
+    <a class="nav" href= "/incidents">Incidents</a>
+    <a class="nav" href= "/orders">Orders</a>
+    <hr align="left" width="75%">
     <h1>Welcome to IT Service Desk</h1>
-    <p>This application will work as IT customer care centre services, it will help the customers to contact IT department easily and quickly using this app.
-    If the customers have any problems in their PCs or if they want to order anything they need from IT Department , so they will open a new ticket using this app, once the ticket has been created then IT Department will contact the customers as per the ticket’s priority to get their issues sorted out.
-    The customer will open new task ( incident or order ) by themselves and the app will ask many questions to figure out what is the customers looking for, then the app will assign the priority, then the app will tell the customer: when the IT person will contact them to get the customer’s issue sorted out.
-    </P>    
+    <div id=home>
+    <p>This application will work as IT customer care centre services, it will help you to contact IT department easily and quickly using this app.</p>
+    <p>If you have any problems in your PCs or if you want to order anything you need from IT Department, so follow the below constractions: </p> 
+    <p>1- for any Hardware, Software, Network or any other issues, please choose <b>Incident </b></p>
+    <a class="nav" href= "/incidents"> Incidents </a><div></div></br>
+    <p>2- for any Request for Laptop, Desktop, Printer, Applicaton....etc. please choose <b>Orders </b></p>
+    <a class="nav" href= "/orders"> Orders </a><div></div></br>
+    <p>once the ticket has been created then IT Department will contact you as per the ticket’s priority to get your issues sorted out.</P>
+    
+    </div> 
     
     <h2> Type of Tickets:</h2>
-    <a href= "/incidents">1- Incidents (Hardware and Software issues)</a><div></div></br>
-    <a href= "/add-item">2- Order (Order items)</a><div></div></br>
+    <a class="nav" href= "/incidents">1- Incidents (Hardware and Software issues)</a><div></div></br>
+    <a class="nav" href= "/orders">2- Order (Order items)</a><div></div></br>
 
     
-    <div></div>
+
+    <div id=log>
     Logged in as user: ${data.user_name}
     
     <form action="/logout" method="POST">
         <button type="submit" class="log_out_button">Log out</button>
     </form>
+    </div>
 
     </div>
 
-    <hr/><hr/>
+    <hr/>
     <footer>&copy; IT Service Desk Managment </footer>
-    <hr/><hr/>
+    <hr/>
 
     </body>
     <html>

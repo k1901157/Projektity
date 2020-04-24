@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const item_schema = new Schema({
+const order_schema = new Schema({
     text: {
         type: String,
         required: false
     },
-    itemType: {
+    ticketType: {
         type: String,
         required: true
     },
@@ -20,6 +20,6 @@ const item_schema = new Schema({
     },
 
 });
-const item_model = new mongoose.model('item', item_schema);
+const order_model = new mongoose.model('order', order_schema);
 
-module.exports = item_model;
+module.exports = order_model;

@@ -1,9 +1,9 @@
-const ticket_model = require('../models/ticket-model');
-const ticket_views = require('../views/ticket-views');
+const incident_model = require('../models/incident-model');
+const incident_views = require('../views/incident-views');
 //const product_model = require('../models/product-model');
 //const product_views = require('../views/product-views');
-const item_model = require('../models/item-model');
-const item_views = require('../views/item-views');
+const order_model = require('../models/order-model');
+const order_views = require('../views/order-views');
 
 const home_view = require('../views/home-views');
 
@@ -22,40 +22,109 @@ const get_home =  (req, res, next) => {
         });
 };
 
-const get_tickets =  (req, res, next) => {
+const get_incidents =  (req, res, next) => {
     const user = req.user;
-    user.populate('tickets')
+    user.populate('incidents')
         .execPopulate()
         .then(() => {
             console.log('user:', user);
             let data = {
                 user_name: user.name,
-                tickets: user.tickets
+                incidents: user.incidents
             };
-            let html = ticket_views.tickets_view(data)
+            let html = incident_views.incidents_view(data)
             res.send(html);
         });
 };
 
-
-const get_item =  (req, res, next) => {
+const post_incident = (req, res, next) => {
     const user = req.user;
-    user.populate('items')
+    let new_incident = incident_model({
+        text: req.body.incident,
+        //ticketType: req.body.ticketType,
+        incidentType: req.body.incidentType,
+        //orderType: req.body.orderType,
+    });
+    new_incident.save().then(() => {
+        console.log('incident saved');
+        user.incidents.push(new_incident);
+        user.save().then(() => {
+            return res.redirect('/incidents');
+        });
+    });
+};
+
+const post_delete_incident = (req, res, next) => {
+    const user = req.user;
+    const incident_id_to_delete = req.body.incident_id;
+
+    //Remove ticket from user.tickets
+    const updated_incidents = user.incidents.filter((incident_id) => {
+        return incident_id != incident_id_to_delete;
+    });
+    user.incidents = updated_incidents;
+
+    //Remove ticket object from database
+    user.save().then(() => {
+        incident_model.findByIdAndRemove(incident_id_to_delete).then(() => {
+            res.redirect('/incidents');
+        });
+    });
+};
+
+const get_orders =  (req, res, next) => {
+    const user = req.user;
+    user.populate('orders')
         .execPopulate()
         .then(() => {
             console.log('user:', user);
             let data = {
                 user_name: user.name,
-                items: user.items
+                orders: user.orders
             };
-            let html = item_views.items_view(data)
+            let html = order_views.orders_view(data)
             res.send(html);
         });
+};
+
+const post_order = (req, res, next) => {
+    const user = req.user;
+    let new_order = order_model({
+        text: req.body.order,
+        ticketType: req.body.orderType,
+        incidentType: req.body.incidentType,
+        orderType: req.body.orderType,
+    });
+    new_order.save().then(() => {
+        console.log('order saved');
+        user.orders.push(new_order);
+        user.save().then(() => {
+            return res.redirect('/orders');
+        });
+    });
+};
+
+const post_delete_order = (req, res, next) => {
+    const user = req.user;
+    const order_id_to_delete = req.body.order_id;
+
+    //Remove ticket from user.tickets
+    const updated_orders = user.orders.filter((order_id) => {
+        return order_id != order_id_to_delete;
+    });
+    user.orders = updated_orders;
+
+    //Remove ticket object from database
+    user.save().then(() => {
+        order_model.findByIdAndRemove(order_id_to_delete).then(() => {
+            res.redirect('/orders');
+        });
+    });
 };
 
 const get_ticket = (req, res, next) => {
     const ticket_id = req.params.id;
-    ticket_model.findOne({
+    incident_model.findOne({
         _id: ticket_id
     }).then((ticket) => {
         ticket.populate('products').execPopulate().then(() => {
@@ -70,77 +139,7 @@ const get_ticket = (req, res, next) => {
    });
 };
 
-const post_delete_ticket = (req, res, next) => {
-    const user = req.user;
-    const ticket_id_to_delete = req.body.ticket_id;
 
-    //Remove ticket from user.tickets
-    const updated_tickets = user.tickets.filter((ticket_id) => {
-        return ticket_id != ticket_id_to_delete;
-    });
-    user.tickets = updated_tickets;
-
-    //Remove ticket object from database
-    user.save().then(() => {
-        ticket_model.findByIdAndRemove(ticket_id_to_delete).then(() => {
-            res.redirect('/incidents');
-        });
-    });
-};
-
-
-const post_delete_item = (req, res, next) => {
-    const user = req.user;
-    const item_id_to_delete = req.body.item_id;
-
-    //Remove ticket from user.tickets
-    const updated_items = user.items.filter((item_id) => {
-        return item_id != item_id_to_delete;
-    });
-    user.items = updated_items;
-
-    //Remove ticket object from database
-    user.save().then(() => {
-        item_model.findByIdAndRemove(item_id_to_delete).then(() => {
-            res.redirect('/add-item');
-        });
-    });
-};
-
-
-const post_ticket = (req, res, next) => {
-    const user = req.user;
-    let new_ticket = ticket_model({
-        text: req.body.ticket,
-        ticketType: req.body.ticketType,
-        incidentType: req.body.incidentType,
-        orderType: req.body.orderType,
-    });
-    new_ticket.save().then(() => {
-        console.log('ticket saved');
-        user.tickets.push(new_ticket);
-        user.save().then(() => {
-            return res.redirect('/incidents');
-        });
-    });
-};
-
-const post_item = (req, res, next) => {
-    const user = req.user;
-    let new_item = item_model({
-        text: req.body.item,
-        itemType: req.body.itemType,
-        incidentType: req.body.incidentType,
-        orderType: req.body.orderType,
-    });
-    new_item.save().then(() => {
-        console.log('item saved');
-        user.items.push(new_item);
-        user.save().then(() => {
-            return res.redirect('/add-item');
-        });
-    });
-};
 
 /*
 const post_product = (req, res, next) => {
@@ -166,13 +165,15 @@ const post_product = (req, res, next) => {
 };
 */
 
-module.exports.get_tickets = get_tickets;
-module.exports.get_ticket = get_ticket;
-module.exports.get_item = get_item;
-module.exports.post_ticket = post_ticket;
-module.exports.post_delete_ticket = post_delete_ticket;
-//module.exports.post_product = post_product;
 module.exports.get_home = get_home;
 
-module.exports.post_item = post_item;
-module.exports.post_delete_item = post_delete_item;
+module.exports.get_incidents = get_incidents;
+module.exports.post_incident = post_incident;
+module.exports.post_delete_incident = post_delete_incident;
+
+module.exports.get_orders = get_orders;
+module.exports.post_order = post_order;
+module.exports.post_delete_order = post_delete_order;
+
+module.exports.get_ticket = get_ticket;
+//module.exports.post_product = post_product;

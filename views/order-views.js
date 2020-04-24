@@ -1,4 +1,4 @@
-const items_view = ((data) => {
+const orders_view = ((data) => {
     let html = `
 
     
@@ -9,22 +9,22 @@ const items_view = ((data) => {
     </head>
 
     <body>
-    <div id="item">
+    <div id="order">
     <a href= "/">home</a><div></div></br>
     <h1>IT Service Desk</h1>
-    <h2>Please chose item Type</h2> `;
+    <h2>Please chose order Type</h2> `;
 
 
 
     html += `
-        <form action="/add-item" method="POST">
+        <form action="/add-order" method="POST">
 
-            <label> item Number:</label>
-            <input type="text" name="item">
+            <label> order Number:</label>
+            <input type="text" name="order">
             
 
-            <label> item Type:</label>
-            <select name="itemType">
+            <label> order Type:</label>
+            <select name="ticketType">
               <option value="incident">Incident</option>
               <option value="order">Order</option>
             </select>
@@ -43,22 +43,22 @@ const items_view = ((data) => {
             <option value="desktop">Desktop</option>
             </select>
 
-            <button type="submit" class="add_button">Add item</button>
+            <button type="submit" class="add_button">Add order</button>
         </form>
         <div></div>`;
 
-        data.items.forEach((item) => {
-            //html += item.text;
+        data.orders.forEach((order) => {
+            //html += order.text;
             html += `
             <div id="test">
-                <a href= "/item/${item._id}">${item.text}</a><div></div></br>
-                <label> item Type:</label> <td>${item.itemType}</td> <div></div></br>
-                <label> Incident Type:</label> <td>${item.incidentType}</td> <div></div></br>
-                <label> Order Type:</label> <td>${item.orderType}</td> <div></div></br>
+                <a href= "/order/${order._id}">${order.text}</a><div></div></br>
+                <label> order Type:</label> <td>${order.ticketType}</td> <div></div></br>
+                <label> Incident Type:</label> <td>${order.incidentType}</td> <div></div></br>
+                <label> Order Type:</label> <td>${order.orderType}</td> <div></div></br>
     
-                <form action="delete-item" method="POST">
-                    <input type="hidden" name="item_id" value="${item._id}">
-                    <button type="submit" class="delete_button">Delete item</button>
+                <form action="delete-order" method="POST">
+                    <input type="hidden" name="order_id" value="${order._id}">
+                    <button type="submit" class="delete_button">Delete order</button>
                 </form>
                 </div>
                 <div></div>
@@ -80,16 +80,16 @@ const items_view = ((data) => {
 });
 
 
-const item_view = (data) => {
+const order_view = (data) => {
     let html = `
     <html>
     <body>
-        item text: ${data.text}
+        order text: ${data.text}
     </body>
     </html>
     `;
     return html;
 };
 
-module.exports.items_view = items_view;
-module.exports.item_view = item_view;
+module.exports.orders_view = orders_view;
+module.exports.order_view = order_view;

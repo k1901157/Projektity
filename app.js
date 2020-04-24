@@ -52,18 +52,22 @@ app.post('/logout', auth_controller.post_logout);
 app.get('/', is_logged_handler, ticket_controller.get_home);
 app.get('/home', is_logged_handler, ticket_controller.get_home);
 
-app.get('/add-item', is_logged_handler, ticket_controller.get_item);
-app.get('/incidents', is_logged_handler, ticket_controller.get_tickets);
+app.get('/incidents', is_logged_handler, ticket_controller.get_incidents);
+app.post('/add-ticket', is_logged_handler, ticket_controller.post_incident);
+app.post('/delete-incident', is_logged_handler, ticket_controller.post_delete_incident);
 
-app.post('/delete-ticket', is_logged_handler, ticket_controller.post_delete_ticket);
+app.get('/orders', is_logged_handler, ticket_controller.get_orders);
+app.post('/add-order', is_logged_handler, ticket_controller.post_order);
+app.post('/delete-order', is_logged_handler, ticket_controller.post_delete_order);
+
+
 
 app.get('/ticket/:id', is_logged_handler, ticket_controller.get_ticket);
-app.post('/add-ticket', is_logged_handler, ticket_controller.post_ticket);
+
 
 //app.post('/add-product/:id', is_logged_handler, ticket_controller.post_product);
 
-app.post('/add-item', is_logged_handler, ticket_controller.post_item);
-app.post('/delete-item', is_logged_handler, ticket_controller.post_delete_item);
+
 
 
 app.use((req, res, next) => {
@@ -76,8 +80,9 @@ app.use((req, res, next) => {
 
 
 //Shutdown server CTRL + C in terminal
-
-const mongoose_url = 'mongodb+srv://memoappdb:bTRE53AvKm4x0wT0@cluster0-wk8t5.mongodb.net/test?retryWrites=true&w=majority';
+//dsbk2gl4QNbbxQUX
+//bTRE53AvKm4x0wT0
+const mongoose_url = 'mongodb+srv://dbIT:dsbk2gl4QNbbxQUX@cluster0-2p2en.mongodb.net/IT_SD?retryWrites=true&w=majority';
 
 mongoose.connect(mongoose_url, {
     useUnifiedTopology: true,
